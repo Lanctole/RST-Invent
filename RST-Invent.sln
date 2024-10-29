@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RST-Invent", "RST-Invent\RST-Invent.csproj", "{FFD594F7-47CF-48B3-8A09-467DECF5D2BA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupProject", "SetupProject\SetupProject.vdproj", "{FDE70E4F-1780-49CC-B977-C04B0FBFC0FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{FFD594F7-47CF-48B3-8A09-467DECF5D2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFD594F7-47CF-48B3-8A09-467DECF5D2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFD594F7-47CF-48B3-8A09-467DECF5D2BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDE70E4F-1780-49CC-B977-C04B0FBFC0FA}.Debug|Any CPU.ActiveCfg = Debug
+		{FDE70E4F-1780-49CC-B977-C04B0FBFC0FA}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

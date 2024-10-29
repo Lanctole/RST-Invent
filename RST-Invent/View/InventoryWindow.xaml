@@ -1,0 +1,158 @@
+﻿<Window x:Class="RST_Invent.View.InventoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RST_Invent"
+        xmlns:viewModel="clr-namespace:RST_Invent.ViewModel"
+        mc:Ignorable="d"
+        Title="Программа учета - Версия 1.0.2"
+        Width="800" Height="600">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2196F3" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#FF1976D2" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <viewModel:AppViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>Учёт товаров</TextBlock>
+                </TabItem.Header>
+
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+                            <Label Content="Поле ввода данных для приема" />
+                            <TextBox Text="{Binding ReceiverInput, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding GetReceiverNum}" Key="Enter" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+                            <Label Content="Поле ввода данных для отгрузки" />
+                            <TextBox Text="{Binding ShipmentInput, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding GetShipmentNum}" Key="Enter" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1" Grid.Column="0" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="18" FontWeight="Bold" HorizontalAlignment="Center">ПРИЕМКА</TextBlock>
+                            <DataGrid Grid.Row="1" Margin="0" AutoGenerateColumns="False" IsReadOnly="True" 
+                                      ItemsSource="{Binding ReceiverGroups}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="2*" />
+                                    <DataGridTextColumn Header="Количество" Binding="{Binding Count}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Grid.Column="1" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock FontSize="18" FontWeight="Bold" HorizontalAlignment="Center">ОТГРУЗКА</TextBlock>
+                            <DataGrid Grid.Row="1" Margin="0" AutoGenerateColumns="False" IsReadOnly="True" 
+                                      ItemsSource="{Binding ShipmentGroups}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="2*" />
+                                    <DataGridTextColumn Header="Количество" Binding="{Binding Count}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+                        <Button Grid.Row="2" Grid.Column="0" VerticalAlignment="Bottom" Margin="10" 
+                                Content="Очистить" Command="{Binding ClearData}" 
+                                Style="{StaticResource RoundedButtonStyle}" 
+                                FontSize="16" Height="40" Width="100" />
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+
+            <TabItem Header="Справочник номенклатуры">
+                <TabItem.Content>
+                    <StackPanel Margin="5">
+                        <StackPanel Width="300" Margin="0 0 0 1">
+                            <Label Content="Идентификатор (24 символа HEX):" />
+                            <TextBox x:Name="NomenclatureIdTextBox" Text="{Binding NomenclatureId, UpdateSourceTrigger=PropertyChanged}" />
+
+                            <Label Content="Наименование:" />
+                            <TextBox x:Name="NomenclatureNameTextBox" 
+                                     Text="{Binding NomenclatureName, UpdateSourceTrigger=PropertyChanged}" Margin="0 5" />
+
+                            <Button Content="Добавить" 
+                                    Command="{Binding AddNomenclatureCommand}"
+                                    CommandParameter="{Binding ElementName=NomenclatureIdTextBox, Path=Text}" />
+
+                            <Button Content="Удалить" 
+                                    Command="{Binding DeleteNomenclatureCommand}" 
+                                    CommandParameter="{Binding NomenclatureId}" 
+                                    Margin="0 5" />
+
+                            <Button Content="Сохранить справочник" Command="{Binding SaveNomenclatureCommand}" />
+                            <CheckBox Content="Автоматически сохранять справочник при выходе из программы" 
+                                      IsChecked="{Binding SaveOnExit}" 
+                                      Margin="0 5" />
+                        </StackPanel>
+
+                        <DataGrid AutoGenerateColumns="False" 
+                                  ItemsSource="{Binding Nomenclatures}" 
+                                  IsReadOnly="True" 
+                                  Margin="0 10" 
+                                  HeadersVisibility="Column" 
+                                  CanUserAddRows="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Идентификатор" Binding="{Binding Id}" Width="2*" />
+                                <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
